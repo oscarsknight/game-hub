@@ -1,16 +1,384 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Game Hub</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GameHub | Play Games</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0d0f14;
+      color: white;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #111827;
+      padding: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #38bdf8;
+    }
+
+    .search-filter {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input, select {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      background: #1f2937;
+      color: white;
+      font-size: 0.95rem;
+    }
+
+    input::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 25px;
+      display: grid;
+      grid-template-columns: 2.2fr 1fr;
+      gap: 20px;
+    }
+
+    .games-section {
+      background: #111827;
+      border-radius: 18px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .games-section h2 {
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+      color: #f8fafc;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+    }
+
+    .game-card {
+      background: #0b1220;
+      border-radius: 15px;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: 0.2s ease;
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56,189,248,0.4);
+    }
+
+    .game-title {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .game-category {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      margin-bottom: 12px;
+    }
+
+    .play-btn {
+      background: #38bdf8;
+      border: none;
+      padding: 10px 14px;
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+      color: black;
+    }
+
+    .play-btn:hover {
+      background: #0ea5e9;
+    }
+
+    .leaderboard {
+      background: #111827;
+      border-radius: 18px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .leaderboard h2 {
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+      color: #f8fafc;
+    }
+
+    .leaderboard-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .leaderboard-item {
+      background: #0b1220;
+      padding: 12px 14px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .rank {
+      font-weight: bold;
+      color: #38bdf8;
+      margin-right: 8px;
+    }
+
+    .player-name {
+      font-weight: bold;
+    }
+
+    .player-score {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .add-score {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .add-score button {
+      background: #22c55e;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .add-score button:hover {
+      background: #16a34a;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      opacity: 0.5;
+      font-size: 0.9rem;
+    }
+
+    @media(max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-  <h1>🎮 My Game Hub</h1>
+  <header>
+    <div class="header-container">
+      <div class="logo">🎮 GameHub</div>
 
-  <p>My first games:</p>
+      <div class="search-filter">
+        <input type="text" id="searchInput" placeholder="Search games..." />
+        <select id="categoryFilter">
+          <option value="all">All Categories</option>
+          <option value="Action">Action</option>
+          <option value="Puzzle">Puzzle</option>
+          <option value="Racing">Racing</option>
+          <option value="Sports">Sports</option>
+        </select>
+      </div>
+    </div>
+  </header>
 
-  <a href="game1.html">Play Game 1</a>
+  <main>
+
+    <section class="games-section">
+      <h2>Available Games</h2>
+      <div class="games-grid" id="gamesGrid"></div>
+    </section>
+
+    <aside class="leaderboard">
+      <h2>🏆 Leaderboard</h2>
+      <ul class="leaderboard-list" id="leaderboardList"></ul>
+
+      <div class="add-score">
+        <input type="text" id="playerName" placeholder="Player name..." />
+        <input type="number" id="playerScore" placeholder="Score..." />
+        <button onclick="addScore()">Add Score</button>
+      </div>
+    </aside>
+
+  </main>
+
+  <footer>
+    © 2026 GameHub | Built for fun 🎮
+  </footer>
+
+  <script>
+    // --------------------------
+    // GAME DATA
+    // --------------------------
+    const games = [
+      { name: "Space Shooter", category: "Action", link: "#" },
+      { name: "Speed Racer", category: "Racing", link: "#" },
+      { name: "Puzzle Master", category: "Puzzle", link: "#" },
+      { name: "Soccer Stars", category: "Sports", link: "#" },
+      { name: "Dungeon Runner", category: "Action", link: "#" },
+      { name: "Brain Quest", category: "Puzzle", link: "#" },
+      { name: "Turbo Drift", category: "Racing", link: "#" },
+      { name: "Basketball Pro", category: "Sports", link: "#" }
+    ];
+
+    // --------------------------
+    // LEADERBOARD DATA
+    // --------------------------
+    let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [
+      { name: "Alex", score: 1200 },
+      { name: "Jordan", score: 950 },
+      { name: "Chris", score: 870 }
+    ];
+
+    // --------------------------
+    // RENDER GAMES
+    // --------------------------
+    function renderGames(filteredGames) {
+      const grid = document.getElementById("gamesGrid");
+      grid.innerHTML = "";
+
+      filteredGames.forEach(game => {
+        const card = document.createElement("div");
+        card.classList.add("game-card");
+
+        card.innerHTML = `
+          <div class="game-title">${game.name}</div>
+          <div class="game-category">${game.category}</div>
+          <button class="play-btn" onclick="playGame('${game.name}')">Play</button>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    // --------------------------
+    // PLAY GAME FUNCTION
+    // --------------------------
+    function playGame(gameName) {
+      alert("Launching: " + gameName + " 🎮\n\n(Replace this with real game links!)");
+    }
+
+    // --------------------------
+    // RENDER LEADERBOARD
+    // --------------------------
+    function renderLeaderboard() {
+      const list = document.getElementById("leaderboardList");
+      list.innerHTML = "";
+
+      leaderboard.sort((a, b) => b.score - a.score);
+
+      leaderboard.forEach((player, index) => {
+        const item = document.createElement("li");
+        item.classList.add("leaderboard-item");
+
+        item.innerHTML = `
+          <div>
+            <span class="rank">#${index + 1}</span>
+            <span class="player-name">${player.name}</span>
+          </div>
+          <div class="player-score">${player.score} pts</div>
+        `;
+
+        list.appendChild(item);
+      });
+
+      localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+    }
+
+    // --------------------------
+    // ADD SCORE
+    // --------------------------
+    function addScore() {
+      const name = document.getElementById("playerName").value.trim();
+      const score = parseInt(document.getElementById("playerScore").value);
+
+      if (!name || isNaN(score)) {
+        alert("Please enter a valid name and score.");
+        return;
+      }
+
+      leaderboard.push({ name, score });
+
+      document.getElementById("playerName").value = "";
+      document.getElementById("playerScore").value = "";
+
+      renderLeaderboard();
+    }
+
+    // --------------------------
+    // FILTER + SEARCH
+    // --------------------------
+    function applyFilters() {
+      const searchValue = document.getElementById("searchInput").value.toLowerCase();
+      const categoryValue = document.getElementById("categoryFilter").value;
+
+      let filtered = games.filter(game =>
+        game.name.toLowerCase().includes(searchValue)
+      );
+
+      if (categoryValue !== "all") {
+        filtered = filtered.filter(game => game.category === categoryValue);
+      }
+
+      renderGames(filtered);
+    }
+
+    document.getElementById("searchInput").addEventListener("input", applyFilters);
+    document.getElementById("categoryFilter").addEventListener("change", applyFilters);
+
+    // --------------------------
+    // INIT
+    // --------------------------
+    renderGames(games);
+    renderLeaderboard();
+  </script>
 
 </body>
 </html>
