@@ -301,10 +301,15 @@
     // --------------------------
     // PLAY GAME FUNCTION
     // --------------------------
-    function playGame(gameName) {
-      alert("Launching: " + gameName + " 🎮\n\n(Replace this with real game links!)");
-    }
+  function playGame(gameName) {
+  const game = games.find(g => g.name === gameName);
 
+  if (game && game.link) {
+    window.location.href = game.link;
+  } else {
+    alert("Game link not found!");
+  }
+}
     // --------------------------
     // RENDER LEADERBOARD
     // --------------------------
